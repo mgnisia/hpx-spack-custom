@@ -50,6 +50,7 @@ class HpxCustom(CMakePackage, CudaPackage):
 
     variant('tools', default=False, description='Build HPX tools')
     variant('examples', default=False, description='Build examples')
+    variant('thread_idle_rates', default=False, description='Thread Idle Rates')
 
     depends_on('hwloc')
     depends_on('python', type=('build', 'test', 'run'))
@@ -158,6 +159,10 @@ class HpxCustom(CMakePackage, CudaPackage):
         args.append('-DHPX_WITH_EXAMPLES={0}'.format(
             'ON' if '+examples' in spec else 'OFF'
         ))
+        
+        args.append('-DHPX_WITH_THREAD_IDLE_RATES={0}'.format(
+            'ON' if '+thread_idle_rates' in spec else 'OFF'
+        ))
 
         args.extend([
             '-DBOOST_ROOT={0}'.format(spec['boost'].prefix),
@@ -165,7 +170,6 @@ class HpxCustom(CMakePackage, CudaPackage):
             '-DHPX_WITH_BOOST_ALL_DYNAMIC_LINK=ON',
             '-DBUILD_SHARED_LIBS=ON',
             '-DHPX_DATASTRUCTURES_WITH_ADAPT_STD_TUPLE=OFF'
-            '-DHPX_WITH_THREAD_IDLE_RATES=ON'
         ])
-
+        print(args)
         return args
